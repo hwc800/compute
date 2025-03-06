@@ -31,7 +31,7 @@ class AdminPc(generics.RetrieveUpdateDestroyAPIView):
         compute_ip = self.request.GET.get('ComputeId', '')
         pc = PC.objects.filter(id=compute_ip)
         if not pc.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '主机不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'compute not exists'}))
         serializer = AllSerializer(pc.first(), many=False)
         print(serializer.data)
         result = {'status': 200, 'data': serializer.data}
@@ -45,41 +45,41 @@ class AdminPc(generics.RetrieveUpdateDestroyAPIView):
         with transaction.atomic():
             city = City.objects.filter(name=city_name)
             if not city.exists():
-                return HttpResponse(json.dumps({'status': 200, 'msg': '城市名不存在'}))
+                return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
             city = city.first()
             laboratory = Laboratory.objects.filter(name=laboratory_name, city=city)
             if not laboratory.exists():
-                return HttpResponse(json.dumps({'status': 200, 'msg': '实验室不存在'}))
+                return HttpResponse(json.dumps({'status': 200, 'msg': 'laboratory not exists'}))
             laboratory = laboratory.first()
             pc = PC.objects.filter(laboratory=laboratory, name=pc_name, host=pc_ip)
             if pc.exists():
-                return HttpResponse(json.dumps({'status': 200, 'msg': '主机已存在'}))
+                return HttpResponse(json.dumps({'status': 200, 'msg': 'compute already exists'}))
             PC.objects.create(laboratory=laboratory, name=pc_name, host=pc_ip)
-            return HttpResponse(json.dumps({'status': 200, 'msg': '新增成功'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'add success'}))
 
     def patch(self, request, *args, **kwargs):
         pc_id = self.request.GET.get('ComputeID', '')
         rename = self.request.GET.get('Rename', '')
 
         if not pc_id:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
 
         pc = PC.objects.filter(id=pc_id)
         if not pc.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '主机不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'compute not exists'}))
         pc.update(name=rename)
-        return HttpResponse(json.dumps({'status': 200, 'msg': '修改成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'modify success'}))
 
     def delete(self, request, *args, **kwargs):
         pc_id = self.request.GET.get('ComputeID', '')
 
         if not pc_id:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         pc = PC.objects.filter(id=pc_id)
         if not pc.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '主机不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'compute not exists'}))
         pc.delete()
-        return HttpResponse(json.dumps({'status': 200, 'msg': '删除成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'delete success'}))
 
 
 class AdminLaboratory(generics.RetrieveUpdateDestroyAPIView):
@@ -87,7 +87,7 @@ class AdminLaboratory(generics.RetrieveUpdateDestroyAPIView):
         laboratory_id = self.request.GET.get('LaboratoryId', '')
         laboratory = Laboratory.objects.filter(id=laboratory_id)
         if not laboratory.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '实验室不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'laboratory not exists'}))
 
         serializer = LaboratorySerializer(laboratory.first(), many=False)
         print(serializer.data)
@@ -100,16 +100,16 @@ class AdminLaboratory(generics.RetrieveUpdateDestroyAPIView):
         city_name = self.request.GET.get('CityName', '')
 
         if not laboratory_name or not city_name or rename:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         city = City.objects.filter(name=city_name)
         if not city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市名错误'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
         city = city.first()
         laboratory = Laboratory.objects.filter(name=laboratory_name, city=city)
         if laboratory.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '实验室已存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'laboratory already exists'}))
         Laboratory.objects.create(name=laboratory_name, city=city)
-        return HttpResponse(json.dumps({'status': 200, 'msg': '实验室已新增成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'laboratory add success'}))
 
     def patch(self, request, *args, **kwargs):
         laboratory_name = self.request.GET.get('LaboratoryName', '')
@@ -117,32 +117,32 @@ class AdminLaboratory(generics.RetrieveUpdateDestroyAPIView):
         city_name = self.request.GET.get('CityName', '')
 
         if not laboratory_name or not city_name or rename:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         city = City.objects.filter(name=city_name)
         if not city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市名错误'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
         city = city.first()
         laboratory = Laboratory.objects.filter(name=laboratory_name, city=city)
         if not laboratory.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '实验室不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'laboratory not exists'}))
         laboratory.update(name=rename)
-        return HttpResponse(json.dumps({'status': 200, 'msg': '修改成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'modify success'}))
 
     def delete(self, request, *args, **kwargs):
         laboratory_name = self.request.GET.get('LaboratoryName', '')
         city_name = self.request.GET.get('CityName', '')
 
         if not laboratory_name or not city_name:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         city = City.objects.filter(name=city_name)
         if not city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市名错误'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
         city = city.first()
         laboratory = Laboratory.objects.filter(name=laboratory_name, city=city)
         if not laboratory.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '实验室不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'laboratory not exists'}))
         laboratory.delete()
-        return HttpResponse(json.dumps({'status': 200, 'msg': '删除成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'delete success'}))
 
 
 class AdminCity(generics.RetrieveUpdateDestroyAPIView):
@@ -150,7 +150,7 @@ class AdminCity(generics.RetrieveUpdateDestroyAPIView):
         city_name = self.request.GET.get('CityName', '')
         city = City.objects.filter(name=city_name)
         if not city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
         serializer = CitySerializer(city.first(), many=False)
         print(serializer.data)
         result = {'status': 200, 'data': serializer.data}
@@ -160,34 +160,34 @@ class AdminCity(generics.RetrieveUpdateDestroyAPIView):
         city_name = self.request.GET.get('CityName', '')
 
         if not city_name:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         city = City.objects.filter(name=city_name)
 
         if city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市已存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city already exists'}))
         City.objects.create(name=city_name)
-        return HttpResponse(json.dumps({'status': 200, 'msg': '城市已新增成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'city add success'}))
 
     def patch(self, request, *args, **kwargs):
         city_name = self.request.GET.get('CityName', '')
 
         if not city_name:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         city = City.objects.filter(name=city_name)
         if not city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
         city = city.first()
         city.update(name=city_name)
-        return HttpResponse(json.dumps({'status': 200, 'msg': '修改成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'modify success'}))
 
     def delete(self, request, *args, **kwargs):
         city_name = self.request.GET.get('CityName', '')
 
         if not city_name:
-            return HttpResponse(json.dumps({'status': 200, 'msg': '请确认参数'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'please check input'}))
         city = City.objects.filter(name=city_name)
         if not city.exists():
-            return HttpResponse(json.dumps({'status': 200, 'msg': '城市不存在'}))
+            return HttpResponse(json.dumps({'status': 200, 'msg': 'city not exists'}))
         city.delete()
-        return HttpResponse(json.dumps({'status': 200, 'msg': '删除成功'}))
+        return HttpResponse(json.dumps({'status': 200, 'msg': 'delete success'}))
 
