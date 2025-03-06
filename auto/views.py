@@ -85,12 +85,12 @@ class AdminPc(generics.RetrieveUpdateDestroyAPIView):
 
 class AdminLaboratory(generics.RetrieveUpdateDestroyAPIView):
     def get(self, request, *args, **kwargs):
-        laboratory_name = self.request.GET.get('LaboratoryName', '')
+        laboratory_name = self.request.GET.get('LaboratoryId', '')
         laboratory = laboratory_name.objects.filter(name=laboratory_name)
         if not laboratory.exists():
             return HttpResponse(json.dumps({'status': 200, 'msg': '实验室不存在'}))
 
-        return HttpResponse(json.dumps(laboratory))
+        return HttpResponse(json.dumps(laboratory.first()))
 
     def post(self, request, *args, **kwargs):
         laboratory_name = self.request.GET.get('LaboratoryName', '')
@@ -150,7 +150,7 @@ class AdminCity(generics.RetrieveUpdateDestroyAPIView):
         if not city.exists():
             return HttpResponse(json.dumps({'status': 200, 'msg': '城市不存在'}))
 
-        return HttpResponse(json.dumps({'status': 200, 'data': city}))
+        return HttpResponse(json.dumps({'status': 200, 'data': city.first()}))
 
     def post(self, request, *args, **kwargs):
         city_name = self.request.GET.get('CityName', '')
