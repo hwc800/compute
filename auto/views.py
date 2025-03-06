@@ -1,13 +1,12 @@
 import json
 
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, generics, viewsets
+from rest_framework import status, generics
 import pythonping
 from django.db import transaction
 from auto.models import PC, Laboratory, City
-from auto.serializers import AllSerializer
+from auto.serializers import AllSerializer, LaboratorySerializer, CitySerializer
 
 
 class PingView(APIView):
@@ -35,7 +34,7 @@ class AdminPc(generics.RetrieveUpdateDestroyAPIView):
             return HttpResponse(json.dumps({'status': 200, 'msg': '主机不存在'}))
         serializer = AllSerializer(pc.first(), many=False)
         print(serializer.data)
-        result = {'status': 200, 'msg': serializer.data}
+        result = {'status': 200, 'data': serializer.data}
         return HttpResponse(json.dumps(result), content_type="text/html; charset=utf-8")
 
     def post(self, request, *args, **kwargs):
@@ -85,12 +84,15 @@ class AdminPc(generics.RetrieveUpdateDestroyAPIView):
 
 class AdminLaboratory(generics.RetrieveUpdateDestroyAPIView):
     def get(self, request, *args, **kwargs):
-        laboratory_name = self.request.GET.get('LaboratoryId', '')
-        laboratory = laboratory_name.objects.filter(name=laboratory_name)
+        laboratory_id = self.request.GET.get('LaboratoryId', '')
+        laboratory = Laboratory.objects.filter(id=laboratory_id)
         if not laboratory.exists():
             return HttpResponse(json.dumps({'status': 200, 'msg': '实验室不存在'}))
 
-        return HttpResponse(json.dumps(laboratory.first()))
+        serializer = LaboratorySerializer(laboratory.first(), many=False)
+        print(serializer.data)
+        result = {'status': 200, 'data': serializer.data}
+        return HttpResponse(json.dumps(result), content_type="text/html; charset=utf-8")
 
     def post(self, request, *args, **kwargs):
         laboratory_name = self.request.GET.get('LaboratoryName', '')
@@ -149,8 +151,10 @@ class AdminCity(generics.RetrieveUpdateDestroyAPIView):
         city = City.objects.filter(name=city_name)
         if not city.exists():
             return HttpResponse(json.dumps({'status': 200, 'msg': '城市不存在'}))
-
-        return HttpResponse(json.dumps({'status': 200, 'data': city.first()}))
+        serializer = CitySerializer(city.first(), many=False)
+        print(serializer.data)
+        result = {'status': 200, 'data': serializer.data}
+        return HttpResponse(json.dumps(result), content_type="text/html; charset=utf-8")
 
     def post(self, request, *args, **kwargs):
         city_name = self.request.GET.get('CityName', '')
