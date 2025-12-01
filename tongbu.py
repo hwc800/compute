@@ -970,7 +970,7 @@ def main():
     # repositories = load_repositories_from_env()
     repositories = [{'name': 'mycode',
                      'path': '.',
-                     'branch': 'test'}]
+                     'branch': 'main'}]
     
     # 如果指定了分支参数，将其作为源分支，保持repositories配置中的分支作为目标分支
     source_branch = None
