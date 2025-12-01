@@ -450,7 +450,7 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
 
     print(f"[OUTPUT] 开始同步 {len(repositories)} 个仓库...")
     if source_branch:
-        print(f"[OUTPUT] 源分支: {source_branch}")
+        print(f"[OUTPUT] 传入源分支: {source_branch}")
 
     # 记录详细的同步结果
     sync_results = []
@@ -976,8 +976,6 @@ def main():
     source_branch = None
     if args.branch:
         source_branch = args.branch
-        print(f"[OUTPUT] 使用源分支: {source_branch}")
-        print(f"[OUTPUT] 目标分支: 使用repositories配置中的分支")
     
     # 执行同步
     success = sync_repositories(repositories, sync_time, source_branch)
