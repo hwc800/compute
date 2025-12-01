@@ -969,8 +969,8 @@ def main():
     # 从环境变量加载仓库配置
     # repositories = load_repositories_from_env()
     repositories = [{'name': 'mycode',
-                     'path': 'variables.BinEnginePath',
-                     'branch': 'main'}]
+                     'path': '.',
+                     'branch': 'test'}]
     
     # 如果指定了分支参数，将其作为源分支，保持repositories配置中的分支作为目标分支
     source_branch = None
