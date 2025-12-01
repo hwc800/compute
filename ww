@@ -1,0 +1,79 @@
+call::setEnv "TMRRoot" "${{variables.Workspace}}/${{variables.TMRFolder}}"
+call::setEnv "TikiStarRoot" "${{TMRRoot}}/TikiStar"
+
+call::setEnv "BinEnginePullParam" "${{variables.BinEnginePullParam}}"
+call::setEnv "BinEnginePath" "${{variables.BinEnginePath}}"
+
+call::setEnv "EnginePullPath" "${{variables.EnginePullPath}}"
+call::setEnv "EnginePullParam" "${{variables.EnginePullParam}}"
+
+call::setEnv "EnginePath" "${{variables.EnginePullParam}}"
+call::setEnv "EnginePullParam" "${{variables.EnginePullParam}}"
+
+call::setEnv "ContentPath" "${{variables.ContentPath}}"
+call::setEnv "ContentPullParam" "${{variables.ContentPullParam}}"
+
+call::setEnv "TikiStarPath" "${{variables.TikiStarPath}}"
+call::setEnv "TikiStarPullParam" "${{variables.TikiStarPullParam}}"
+
+call::setEnv "TikiFrameworkPath" "${{variables.TikiFrameworkPath}}"
+call::setEnv "TikiFrameworkPullParam" "${{variables.TikiFrameworkPullParam}}"
+
+call::setEnv "FrameworkPath" "${{variables.FrameworkPath}}"
+call::setEnv "FrameworkPullParam" "${{variables.FrameworkPullParam}}"
+
+call::setEnv "TKCoreFrameworkPath" "${{variables.TKCoreFrameworkPath}}"
+call::setEnv "TKCoreFrameworkPullParam" "${{variables.TKCoreFrameworkPullParam}}"
+
+call::setEnv "SharedSystemsPath" "${{variables.SharedSystemsPath}}"
+call::setEnv "SharedSystemsPullParam" "${{variables.SharedSystemsPullParam}}"
+
+call::setEnv "MinViableSystemSetPath" "${{variables.MinViableSystemSetPath}}"
+call::setEnv "MinViableSystemSetPullParam" "${{variables.MinViableSystemSetPullParam}}"
+
+call::setEnv "MinViableSourceSetPath" "${{variables.MinViableSourceSetPath}}"
+call::setEnv "MinViableSourceSetPullParam" "${{variables.MinViableSourceSetPullParam}}"
+
+call::setEnv "MinViablePluginSetPath" "${{variables.MinViablePluginSetPath}}"
+call::setEnv "MinViablePluginSetPullParam" "${{variables.MinViablePluginSetPullParam}}"
+
+call::setEnv "MinViableBlueprintSetPath" "${{variables.MinViableBlueprintSetPath}}"
+call::setEnv "MinViableBlueprintSetPullParam" "${{variables.MinViableBlueprintSetPullParam}}"
+
+call::setEnv "MinViableContentSetPath" "${{variables.MinViableContentSetPath}}"
+call::setEnv "MinViableContentSetPullParam" "${{variables.MinViableContentSetPullParam}}"
+
+call::setEnv "PuertsPath" "${{variables.PuertsPath}}"
+call::setEnv "PuertsPullParam" "${{variables.PuertsPullParam}}"
+
+call::setEnv "ProtoJSPath" "${{variables.ProtoJSPath}}"
+call::setEnv "ProtoJSPullParam" "${{variables.ProtoJSPullParam}}"
+
+call::setEnv "GCloudSDKPath" "${{variables.GCloudSDKPath}}"
+call::setEnv "GCloudSDKPullParam" "${{variables.GCloudSDKPullParam}}"
+
+call::setEnv "GameFeaturesPath" "${{variables.GameFeaturesPath}}"
+call::setEnv "GameFeaturesPullParam" "${{variables.GameFeaturesPullParam}}"
+
+call::setEnv "TKPartyGamePath" "${{variables.TKPartyGamePath}}"
+call::setEnv "TKPartyGamePullParam" "${{variables.TKPartyGamePullParam}}"
+
+call::setEnv "TKPartyGame_ContentPath" "${{variables.TKPartyGame_ContentPath}}"
+call::setEnv "TKPartyGame_ContentPullParam" "${{variables.TKPartyGame_ContentPullParam}}"
+
+call::setEnv "TKPartyGameSystemPath" "${{variables.TKPartyGameSystemPath}}"
+call::setEnv "TKPartyGameSystemPullParam" "${{variables.TKPartyGameSystemPullParam}}"
+
+call::setEnv "TKPartyGameSystem_ContentPath" "${{variables.TKPartyGameSystem_ContentPath}}"
+call::setEnv "TKPartyGameSystem_ContentPullParam" "${{variables.TKPartyGameSystem_ContentPullParam}}"
+
+call::setEnv "ConfigDataPath" "${{variables.ConfigDataPath}}"
+call::setEnv "ConfigDataPullParam" "${{variables.ConfigDataPullParam}}"
+
+call::setEnv "ProtocolFilePath" "${{variables.ProtocolFilePath}}"
+call::setEnv "ProtocolFilePullParam" "${{variables.ProtocolFilePullParam}}"
+
+call::setEnv "DistributedDSPath" "${{variables.DistributedDSPath}}"
+call::setEnv "DistributedDSPullParam" "${{variables.DistributedDSPullParam}}"
+
+

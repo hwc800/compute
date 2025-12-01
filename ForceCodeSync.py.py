@@ -5,7 +5,6 @@
 配置方式：通过环境变量读取仓库配置
 """
 
-
 import argparse
 import json
 import time
@@ -150,124 +149,126 @@ def load_repositories_from_env():
     repositories = list()
     if os.environ.get('SyncBinEngine', None):
         # BinaryEngine
-        repositories.append({'name': os.environ.get('BinEnginePath', 'BinEnginePath'),
-                             'path': os.environ.get('variables.BinEnginePath', ''),
+        repositories.append({'name': os.environ.get('BinEngine', 'BinEngine'),
+                             'path': os.environ.get('BinEnginePath', ''),
                              'branch': os.environ.get('BinEnginePullParam', '')})
     if os.environ.get('SyncEngine', None):
         # SourceEngine
         repositories.append({'name': os.environ.get('SourceEngine', 'SourceEngine'),
-                             'path': os.environ.get('variables.EnginePullParam', ''),
+                             'path': os.environ.get('EnginePullPath', ''),
                              'branch': os.environ.get('EnginePullParam', '')})
     # TikiMainContent
-    repositories.append({'name': os.environ.get('Engine', ''),
-                         'path': os.environ.get('variables.ContentPath', ''),
-                         'branch': os.environ.get('variables.EnginePullParam', '')})
+    repositories.append({'name': os.environ.get('TikiMainContent', 'TikiMainContent'),
+                         'path': os.environ.get('ContentPath', ''),
+                         'branch': os.environ.get('ContentPullParam', '')})
     # TikiMainRoot
     repositories.append({'name': os.environ.get('TikiMainRoot', 'TikiMainRoot'),
-                         'path': os.environ.get('variables.TikiStarPath', ''),
-                         'branch': os.environ.get('variables.TikiStarPullParam', '')})
+                         'path': os.environ.get('TikiStarPath', ''),
+                         'branch': os.environ.get('TikiStarPullParam', '')})
     # TikiFramework Content
     repositories.append({'name': os.environ.get('TikiFrameworkContent', 'TikiFrameworkContent'),
-                         'path': os.environ.get('variables.TikiFrameworkPath', ''),
-                         'branch': os.environ.get('variables.TikiFrameworkPullParam', '')})
+                         'path': os.environ.get('TikiFrameworkPath', ''),
+                         'branch': os.environ.get('TikiFrameworkPullParam', '')})
     # Framework
-    repositories.append({'name': os.environ.get('Framework', ''),
-                         'path': os.environ.get('variables.FrameworkPath', ''),
-                         'branch': os.environ.get('variables.FrameworkPullParam', '')})
+    repositories.append({'name': os.environ.get('Framework', 'Framework'),
+                         'path': os.environ.get('FrameworkPath', ''),
+                         'branch': os.environ.get('FrameworkPullParam', '')})
     # TKCoreFramework
     repositories.append({'name': os.environ.get('TKCoreFramework', 'TKCoreFramework'),
-                         'path': os.environ.get('variables.TKCoreFrameworkPath', ''),
-                         'branch': os.environ.get('variables.TKCoreFrameworkPullParam', '')})
+                         'path': os.environ.get('TKCoreFrameworkPath', ''),
+                         'branch': os.environ.get('TKCoreFrameworkPullParam', '')})
     # SharedSystems
     repositories.append({'name': os.environ.get('SharedSystems', 'SharedSystems'),
-                         'path': os.environ.get('variables.SharedSystemsPath', ''),
-                         'branch': os.environ.get('variables.SharedSystemsPullParam', '')})
+                         'path': os.environ.get('SharedSystemsPath', ''),
+                         'branch': os.environ.get('SharedSystemsPullParam', '')})
     # TS_MVSS
     repositories.append({'name': os.environ.get('TS_MVSS', 'TS_MVSS'),
-                         'path': os.environ.get('variables.MinViableSystemSetPath', ''),
-                         'branch': os.environ.get('variables.MinViableSystemSetPullParam', '')})
+                         'path': os.environ.get('MinViableSystemSetPath', ''),
+                         'branch': os.environ.get('MinViableSystemSetPullParam', '')})
     # Cpp_MVSS
     repositories.append({'name': os.environ.get('Cpp_MVSS', 'Cpp_MVSS'),
-                         'path': os.environ.get('variables.MinViableSourceSetPath', ''),
-                         'branch': os.environ.get('variables.MinViableSourceSetPullParam', '')})
+                         'path': os.environ.get('MinViableSourceSetPath', ''),
+                         'branch': os.environ.get('MinViableSourceSetPullParam', '')})
     # Plg_MVSS
     repositories.append({'name': os.environ.get('Plg_MVSS', 'Plg_MVSS'),
-                         'path': os.environ.get('variables.MinViablePluginSetPath', ''),
-                         'branch': os.environ.get('variables.MinViablePluginSetPullParam', '')})
+                         'path': os.environ.get('MinViablePluginSetPath', ''),
+                         'branch': os.environ.get('MinViablePluginSetPullParam', '')})
     # BP_MVSS
     repositories.append({'name': os.environ.get('BP_MVSS', 'BP_MVSS'),
-                         'path': os.environ.get('variables.MinViableBlueprintSetPath', ''),
-                         'branch': os.environ.get('variables.MinViableBlueprintSetPullParam', '')})
+                         'path': os.environ.get('MinViableBlueprintSetPath', ''),
+                         'branch': os.environ.get('MinViableBlueprintSetPullParam', '')})
     # Cnt_MVSS
     repositories.append({'name': os.environ.get('Cnt_MVSS', 'Cnt_MVSS'),
-                         'path': os.environ.get('variables.MinViableContentSetPath', ''),
-                         'branch': os.environ.get('variables.MinViableContentSetPullParam', '')})
+                         'path': os.environ.get('MinViableContentSetPath', ''),
+                         'branch': os.environ.get('MinViableContentSetPullParam', '')})
     # Puerts
     repositories.append({'name': os.environ.get('Puerts', 'Puerts'),
-                         'path': os.environ.get('variables.PuertsPath', ''),
-                         'branch': os.environ.get('variables.PuertsPullParam', '')})
+                         'path': os.environ.get('PuertsPath', ''),
+                         'branch': os.environ.get('PuertsPullParam', '')})
     # ProtoJS
     repositories.append({'name': os.environ.get('ProtoJS', 'ProtoJS'),
-                         'path': os.environ.get('variables.ProtoJSPath', ''),
-                         'branch': os.environ.get('variables.ProtoJSPullParam', '')})
+                         'path': os.environ.get('ProtoJSPath', ''),
+                         'branch': os.environ.get('ProtoJSPullParam', '')})
     # DDSFade
     repositories.append({'name': os.environ.get('DDSFade', 'DDSFade'),
-                         'path': os.environ.get('variables.DistributedDSPath', ''),
-                         'branch': os.environ.get('variables.DistributedDSPullParam', '')})
+                         'path': os.environ.get('DistributedDSPath', ''),
+                         'branch': os.environ.get('DistributedDSPullParam', '')})
     # GCloudSDK
     repositories.append({'name': os.environ.get('GCloudSDK', 'GCloudSDK'),
-                         'path': os.environ.get('variables.GCloudSDKPath', ''),
-                         'branch': os.environ.get('variables.GCloudSDKPullParam', '')})
+                         'path': os.environ.get('GCloudSDKPath', ''),
+                         'branch': os.environ.get('GCloudSDKPullParam', '')})
     # GameFeatures
     repositories.append({'name': os.environ.get('GameFeatures', 'GameFeatures'),
-                         'path': os.environ.get('variables.GameFeaturesPath', ''),
-                         'branch': os.environ.get('variables.GameFeaturesPullParam', '')})
+                         'path': os.environ.get('GameFeaturesPath', ''),
+                         'branch': os.environ.get('GameFeaturesPullParam', '')})
     # TKPartyGame
     repositories.append({'name': os.environ.get('TKPartyGame', 'TKPartyGame'),
-                         'path': os.environ.get('variables.TKPartyGamePath', ''),
-                         'branch': os.environ.get('variables.TKPartyGamePullParam', '')})
+                         'path': os.environ.get('TKPartyGamePath', ''),
+                         'branch': os.environ.get('TKPartyGamePullParam', '')})
     # TKPartyGame Content
     repositories.append({'name': os.environ.get('TKPartyGameContent', 'TKPartyGameContent'),
-                         'path': os.environ.get('variables.TKPartyGame_ContentPath', ''),
-                         'branch': os.environ.get('variables.TKPartyGame_ContentPullParam', '')})
+                         'path': os.environ.get('TKPartyGame_ContentPath', ''),
+                         'branch': os.environ.get('TKPartyGame_ContentPullParam', '')})
 
     # TKPartyGameSystem
     repositories.append({'name': os.environ.get('TKPartyGameSystem', 'TKPartyGameSystem'),
-                         'path': os.environ.get('variables.TKPartyGameSystemPath', ''),
-                         'branch': os.environ.get('variables.TKPartyGameSystemPullParam', '')})
+                         'path': os.environ.get('TKPartyGameSystemPath', ''),
+                         'branch': os.environ.get('TKPartyGameSystemPullParam', '')})
     # TKPartyGameSystem Content
     repositories.append({'name': os.environ.get('TKPartyGameSystemContent', 'TKPartyGameSystemContent'),
-                         'path': os.environ.get('variables.TKPartyGameSystem_ContentPath', ''),
-                         'branch': os.environ.get('variables.TKPartyGameSystem_ContentPullParam', '')})
+                         'path': os.environ.get('TKPartyGameSystem_ContentPath', ''),
+                         'branch': os.environ.get('TKPartyGameSystem_ContentPullParam', '')})
     # # JSC Compiler, 强制同步不需要
     # repositories.append({'name': os.environ.get('JSCCompiler', 'JSCCompiler'),
-    #                      'path': os.environ.get('variables.jsc_compilerPath', ''),
-    #                      'branch': os.environ.get('variables.jsc_compilerPullParam', '')})
+    #                      'path': os.environ.get('jsc_compilerPath', ''),
+    #                      'branch': os.environ.get('jsc_compilerPullParam', '')})
     if os.environ.get("SyncConfigData", 'false') == 'ture':
         # ConfigData
         repositories.append({'name': os.environ.get('ConfigData', 'ConfigData'),
-                             'path': os.environ.get('variables.ConfigDataPath', ''),
-                             'branch': os.environ.get('variables.ConfigDataPullParam', '')})
+                             'path': os.environ.get('ConfigDataPath', ''),
+                             'branch': os.environ.get('ConfigDataPullParam', '')})
 
     # ProtocolFile
     if os.environ.get('SyncProtocolFile', 'false') == 'ture':
         repositories.append({'name': os.environ.get('ConfigData', 'ConfigData'),
-                             'path': os.environ.get('variables.ProtocolFilePath', ''),
-                             'branch': os.environ.get('variables.ProtocolFilePullParam', '')})
+                             'path': os.environ.get('ProtocolFilePath', ''),
+                             'branch': os.environ.get('ProtocolFilePullParam', '')})
     return repositories
+
 
 def validate_repository(repo_path):
     """验证仓库路径是否有效"""
     if not os.path.exists(repo_path):
         print(f"[ERROR] 仓库路径不存在: {repo_path}")
         return False
-    
+
     git_dir = os.path.join(repo_path, ".git")
     if not os.path.exists(git_dir):
         print(f"[ERROR] 路径不是Git仓库: {repo_path}")
         return False
-    
+
     return True
+
 
 def run_command(cmd, capture_output=True, cwd=None):
     """执行shell命令并返回结果"""
@@ -278,6 +279,7 @@ def run_command(cmd, capture_output=True, cwd=None):
         print(f"[ERROR] 执行命令失败: {cmd}")
         print(f"[ERROR] 错误信息: {e}")
         return None
+
 
 def get_dest_commit_id(branch, sync_time=None, repo_path="."):
     """获取目标commit ID"""
@@ -299,6 +301,7 @@ def get_dest_commit_id(branch, sync_time=None, repo_path="."):
         else:
             print(f"[ERROR] 在分支 {branch} 中找不到 {sync_time} 之前的commit")
             return None
+
 
 def reset_branch(branch, sync_time=None, repo_path="."):
     """重置分支到指定commit"""
@@ -355,17 +358,18 @@ def reset_branch(branch, sync_time=None, repo_path="."):
         print(f"[ERROR] 重置 {branch} 失败! CommitID不匹配: {cur_commit_id[:7]} != {dest_commit_id[:7]}")
         return False
 
+
 def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_path="."):
     """将源分支的内容同步到目标分支（假设已经切换到目标分支）"""
     print(f"[OUTPUT] 开始将源分支 {source_branch} 的内容同步到目标分支 {target_branch}...")
 
     # 保存当前工作目录
     original_cwd = os.getcwd()
-    
+
     try:
         # 切换到仓库目录
         os.chdir(repo_path)
-        
+
         # 确认当前分支是目标分支（已经由sync_repositories函数切换）
         current_branch_cmd = 'git branch --show-current'
         current_branch_result = run_command(current_branch_cmd, cwd=repo_path)
@@ -379,9 +383,9 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
                 if not checkout_result or checkout_result.returncode != 0:
                     print(f"[ERROR] 切换到目标分支 {target_branch} 失败")
                     return False
-        
+
         print(f"[OUTPUT] 确认当前分支是目标分支: {target_branch}")
-        
+
         # 获取源分支的目标commit ID
         dest_commit_id = get_dest_commit_id(source_branch, sync_time, repo_path)
         if not dest_commit_id:
@@ -427,19 +431,19 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
 
         # 比对是否与目标commit ID一致
         if cur_commit_id == dest_commit_id:
-            print(f"[OUTPUT] 同步成功! 目标分支 {target_branch} 已同步到源分支 {source_branch} 的commit: {cur_commit_id[:7]}")
+            print(
+                f"[OUTPUT] 同步成功! 目标分支 {target_branch} 已同步到源分支 {source_branch} 的commit: {cur_commit_id[:7]}")
             return True
         else:
             print(f"[ERROR] 同步失败! CommitID不匹配: {cur_commit_id[:7]} != {dest_commit_id[:7]}")
             return False
-            
+
     except Exception as e:
         print(f"[ERROR] 同步过程中发生异常: {e}")
         return False
     finally:
         # 恢复原始工作目录
         os.chdir(original_cwd)
-
 
 
 def sync_repositories(repositories, sync_time=None, source_branch=None):
@@ -461,12 +465,13 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
         repo_name = repo.get("name", "未命名仓库")
         # 拼接绝对路径
         repo_path = os.path.join(os.environ.get("Workspace", ""), repo.get("path", ""))
+        repo_path = repo_path.replace("TK_TMR/", "")
         target_branch = repo.get("branch", "master")
-        
+
         # 如果没有指定源分支，则使用目标分支作为源分支（保持原有行为）
         actual_source_branch = source_branch if source_branch else target_branch
 
-        print(f"\n[OUTPUT] {'='*50}")
+        print(f"\n[OUTPUT] {'=' * 50}")
         print(f"[OUTPUT] 同步仓库: {repo_name}")
         print(f"[OUTPUT] 路径: {repo_path}")
         print(f"[OUTPUT] 目标分支: {target_branch}")
@@ -498,17 +503,17 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
             print(f"[OUTPUT] 切换到目标分支: {target_branch}")
             checkout_cmd = f'git checkout {target_branch}'
             checkout_result = run_command(checkout_cmd, capture_output=False, cwd=repo_path)
-            
+
             if checkout_result and checkout_result.returncode == 0:
                 print(f"[OUTPUT] 已切换到目标分支: {target_branch}")
             else:
                 fetch_cmd = 'git fetch origin'
                 fetch_result = run_command(fetch_cmd, capture_output=False, cwd=repo_path)
-                
+
                 if fetch_result and fetch_result.returncode == 0:
                     checkout_remote_cmd = f'git checkout -b {target_branch} origin/{target_branch}'
                     checkout_remote_result = run_command(checkout_remote_cmd, capture_output=False, cwd=repo_path)
-                    
+
                     if checkout_remote_result and checkout_remote_result.returncode == 0:
                         print(f"[OUTPUT] 从远程创建并切换到目标分支: {target_branch}")
                     else:
@@ -536,7 +541,7 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
                     })
                     failed_count += 1
                     continue
-            
+
             print(f"[OUTPUT] 已成功切换到目标分支: {target_branch}")
 
             # 在同步前为当前状态打tag（使用目标分支）
@@ -590,7 +595,7 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
             failed_count += 1
 
     # 详细显示同步结果
-    print(f"\n[OUTPUT] {'='*60}")
+    print(f"\n[OUTPUT] {'=' * 60}")
     print("[OUTPUT] === 同步完成详情 ===")
     print(f"[OUTPUT] 总计仓库数: {len(repositories)}")
     print(f"[OUTPUT] 成功: {success_count}")
@@ -601,18 +606,20 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
         print(f"\n[OUTPUT] [SUCCESS] 成功同步的仓库 ({success_count}个):")
         for result in sync_results:
             if result["success"]:
-                print(f"[OUTPUT]   - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
+                print(
+                    f"[OUTPUT]   - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
 
     # 显示失败仓库列表及错误信息
     if failed_count > 0:
         print(f"\n[OUTPUT] [ERROR] 同步失败的仓库 ({failed_count}个):")
         for result in sync_results:
             if not result["success"]:
-                print(f"[OUTPUT]   - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
+                print(
+                    f"[OUTPUT]   - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
                 if result["error"]:
                     print(f"[OUTPUT]     错误: {result['error']}")
 
-    print(f"\n[OUTPUT] {'='*60}")
+    print(f"\n[OUTPUT] {'=' * 60}")
 
     return failed_count == 0
 
@@ -951,11 +958,10 @@ def show_permission_status():
         print("[OUTPUT]   • 需要管理员权限")
 
 
-
 def main():
     """主函数"""
     # 同步所有仓库到指定分支的最新commit
-    # python ForceCodeSync.py - -branch test
+    # python ForceCodeSync.py --branch test
     parser = argparse.ArgumentParser(description='多仓库Git分支同步工具')
     parser.add_argument('--branch', help='指定源分支名称（将源分支内容同步到配置中的目标分支）', default=None)
 
@@ -967,16 +973,16 @@ def main():
         print(f"[OUTPUT] 从环境变量读取同步时间: {sync_time}")
 
     # 从环境变量加载仓库配置
-    # repositories = load_repositories_from_env()
-    repositories = [{'name': 'mycode',
-                     'path': '.',
-                     'branch': 'main'}]
-    
+    repositories = load_repositories_from_env()
+    print(len(repositories))
+    for i in repositories:
+        print(f'repositories: {i["name"]}, {i["path"]}, {i["branch"]}')
+
     # 如果指定了分支参数，将其作为源分支，保持repositories配置中的分支作为目标分支
     source_branch = None
     if args.branch:
         source_branch = args.branch
-    
+
     # 执行同步
     success = sync_repositories(repositories, sync_time, source_branch)
     if not success:
