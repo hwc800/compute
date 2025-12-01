@@ -34,10 +34,10 @@ def merge_and_resolve_conflicts(repo_path, resolve_strategy, branch_name):
     返回:
         bool: 操作是否成功
     """
-    print(f"开始合并远端分支 {branch_name} 到本地分支...")
-    print(f"仓库路径: {repo_path}")
-    print(f"解决策略: {resolve_strategy}")
-    print(f"分支名: {branch_name}")
+    print(f"[OUTPUT] 开始合并远端分支 {branch_name} 到本地分支...")
+    print(f"[OUTPUT] 仓库路径: {repo_path}")
+    print(f"[OUTPUT] 解决策略: {resolve_strategy}")
+    print(f"[OUTPUT] 分支名: {branch_name}")
 
     # 切换到指定目录
     if not os.path.exists(repo_path):
@@ -47,21 +47,21 @@ def merge_and_resolve_conflicts(repo_path, resolve_strategy, branch_name):
     original_cwd = os.getcwd()
     try:
         os.chdir(repo_path)
-        print(f"已切换到目录: {repo_path}")
+        print(f"[OUTPUT] 已切换到目录: {repo_path}")
 
         # 远端分支合入到本地分支
         merge_cmd = f'git merge --strategy-option={resolve_strategy} origin/{branch_name}'
-        print(f"执行合并命令: {merge_cmd}")
+        print(f"[OUTPUT] 执行合并命令: {merge_cmd}")
 
         merge_result = subprocess.run(merge_cmd, shell=True, capture_output=True, text=True)
 
         if merge_result.returncode != 0:
-            print(f"合并过程中出现冲突或错误:")
-            print(f"stdout: {merge_result.stdout}")
-            print(f"stderr: {merge_result.stderr}")
+            print(f"[ERROR] 合并过程中出现冲突或错误:")
+            print(f"[ERROR] stdout: {merge_result.stdout}")
+            print(f"[ERROR] stderr: {merge_result.stderr}")
 
         # 合入完毕后需要睡眠一段时间
-        print("等待60秒，确保git进程完全退出...")
+        print("[OUTPUT] 等待60秒，确保git进程完全退出...")
         time.sleep(60)
 
         # 删除index.lock文件（如果存在）
@@ -69,14 +69,14 @@ def merge_and_resolve_conflicts(repo_path, resolve_strategy, branch_name):
         if os.path.exists(lock_file):
             try:
                 os.remove(lock_file)
-                print("已删除index.lock文件")
+                print("[OUTPUT] 已删除index.lock文件")
             except Exception as e:
-                print(f"删除index.lock文件失败: {e}")
+                print(f"[ERROR] 删除index.lock文件失败: {e}")
         else:
-            print("index.lock文件不存在")
+            print("[OUTPUT] index.lock文件不存在")
 
         # 遍历解决冲突文件
-        print("开始解决冲突文件...")
+        print("[OUTPUT] 开始解决冲突文件...")
 
         # 获取冲突文件列表
         conflict_cmd = 'git diff --name-only --diff-filter=U'
@@ -84,55 +84,55 @@ def merge_and_resolve_conflicts(repo_path, resolve_strategy, branch_name):
 
         if conflict_result.returncode == 0 and conflict_result.stdout.strip():
             conflict_files = conflict_result.stdout.strip().split('\n')
-            print(f"发现 {len(conflict_files)} 个冲突文件:")
+            print(f"[OUTPUT] 发现 {len(conflict_files)} 个冲突文件:")
 
             for conflict_file in conflict_files:
                 if conflict_file.strip():
-                    print(f"处理冲突文件: {conflict_file}")
+                    print(f"[OUTPUT] 处理冲突文件: {conflict_file}")
 
                     # 使用参数覆盖冲突文件
                     checkout_cmd = f'git checkout --{resolve_strategy} -- "{conflict_file}"'
                     checkout_result = subprocess.run(checkout_cmd, shell=True, capture_output=True, text=True)
 
                     if checkout_result.returncode == 0:
-                        print(f"✓ 已解决冲突: {conflict_file}")
+                        print(f"[OUTPUT] ✓ 已解决冲突: {conflict_file}")
 
                         # 单独添加每个已解决的文件
                         add_cmd = f'git add -f -- "{conflict_file}"'
                         add_result = subprocess.run(add_cmd, shell=True, capture_output=True, text=True)
 
                         if add_result.returncode == 0:
-                            print(f"✓ 已添加文件: {conflict_file}")
+                            print(f"[OUTPUT] ✓ 已添加文件: {conflict_file}")
                         else:
-                            print(f"✗ 添加文件失败: {conflict_file}")
-                            print(f"错误信息: {add_result.stderr}")
+                            print(f"[ERROR] ✗ 添加文件失败: {conflict_file}")
+                            print(f"[ERROR] 错误信息: {add_result.stderr}")
                     else:
-                        print(f"✗ 解决冲突失败: {conflict_file}")
-                        print(f"错误信息: {checkout_result.stderr}")
+                        print(f"[ERROR] ✗ 解决冲突失败: {conflict_file}")
+                        print(f"[ERROR] 错误信息: {checkout_result.stderr}")
         else:
-            print("未发现冲突文件")
+            print("[OUTPUT] 未发现冲突文件")
 
         # 完成合并提交
         commit_message = f"merge from origin/{branch_name}, strategy_option: {resolve_strategy}"
         commit_cmd = f'git commit -m "{commit_message}"'
-        print(f"执行提交命令: {commit_cmd}")
+        print(f"[OUTPUT] 执行提交命令: {commit_cmd}")
 
         commit_result = subprocess.run(commit_cmd, shell=True, capture_output=True, text=True)
 
         if commit_result.returncode == 0:
-            print("✓ 合并提交成功")
+            print("[OUTPUT] ✓ 合并提交成功")
         else:
-            print(f"✗ 合并提交失败: {commit_result.stderr}")
+            print(f"[ERROR] ✗ 合并提交失败: {commit_result.stderr}")
 
         # 推送更改
-        print("开始推送更改到远端...")
+        print("[OUTPUT] 开始推送更改到远端...")
         push_result = subprocess.run('git push', shell=True, capture_output=True, text=True)
 
         if push_result.returncode == 0:
-            print("✓ 推送成功")
+            print("[OUTPUT] ✓ 推送成功")
             return True
         else:
-            print(f"✗ 推送失败: {push_result.stderr}")
+            print(f"[ERROR] ✗ 推送失败: {push_result.stderr}")
             return False
 
     except Exception as e:
@@ -140,7 +140,7 @@ def merge_and_resolve_conflicts(repo_path, resolve_strategy, branch_name):
         return False
     finally:
         os.chdir(original_cwd)
-        print(f"已切换回原目录: {original_cwd}")
+        print(f"[OUTPUT] 已切换回原目录: {original_cwd}")
 
 
 def load_repositories_from_env():
@@ -259,12 +259,12 @@ def load_repositories_from_env():
 def validate_repository(repo_path):
     """验证仓库路径是否有效"""
     if not os.path.exists(repo_path):
-        print(f"仓库路径不存在: {repo_path}")
+        print(f"[ERROR] 仓库路径不存在: {repo_path}")
         return False
     
     git_dir = os.path.join(repo_path, ".git")
     if not os.path.exists(git_dir):
-        print(f"路径不是Git仓库: {repo_path}")
+        print(f"[ERROR] 路径不是Git仓库: {repo_path}")
         return False
     
     return True
@@ -275,8 +275,8 @@ def run_command(cmd, capture_output=True, cwd=None):
         result = subprocess.run(cmd, shell=True, capture_output=capture_output, text=True, cwd=cwd)
         return result
     except Exception as e:
-        print(f"执行命令失败: {cmd}")
-        print(f"错误信息: {e}")
+        print(f"[ERROR] 执行命令失败: {cmd}")
+        print(f"[ERROR] 错误信息: {e}")
         return None
 
 def get_dest_commit_id(branch, sync_time=None, repo_path="."):
@@ -288,7 +288,7 @@ def get_dest_commit_id(branch, sync_time=None, repo_path="."):
         if result and result.returncode == 0:
             return result.stdout.strip()
         else:
-            print(f"获取分支 {branch} 最新commit失败: {result.stderr if result else '未知错误'}")
+            print(f"[ERROR] 获取分支 {branch} 最新commit失败: {result.stderr if result else '未知错误'}")
             return None
     else:
         # 同步到指定时间前的最后一个commit
@@ -297,67 +297,67 @@ def get_dest_commit_id(branch, sync_time=None, repo_path="."):
         if result and result.returncode == 0 and result.stdout.strip():
             return result.stdout.strip()
         else:
-            print(f"在分支 {branch} 中找不到 {sync_time} 之前的commit")
+            print(f"[ERROR] 在分支 {branch} 中找不到 {sync_time} 之前的commit")
             return None
 
 def reset_branch(branch, sync_time=None, repo_path="."):
     """重置分支到指定commit"""
-    print(f"开始重置分支 {branch}...")
+    print(f"[OUTPUT] 开始重置分支 {branch}...")
 
     # 获取目标commit ID
     dest_commit_id = get_dest_commit_id(branch, sync_time, repo_path)
     if not dest_commit_id:
         return False
 
-    print(f"目标commit ID: {dest_commit_id[:7]}")
+    print(f"[OUTPUT] 目标commit ID: {dest_commit_id[:7]}")
 
     # reset hard到指定commit
     reset_cmd = f'git reset --hard {dest_commit_id}'
     reset_result = run_command(reset_cmd, capture_output=False, cwd=repo_path)
     if not reset_result or reset_result.returncode != 0:
-        print(f"重置分支失败: {reset_result.stderr if reset_result else '未知错误'}")
+        print(f"[ERROR] 重置分支失败: {reset_result.stderr if reset_result else '未知错误'}")
         return False
 
-    print("重置分支成功")
+    print("[OUTPUT] 重置分支成功")
 
     # 强制推送到远端
     push_cmd = 'git push --force'
     push_result = run_command(push_cmd, capture_output=False, cwd=repo_path)
     if not push_result or push_result.returncode != 0:
-        print(f"强制推送失败: {push_result.stderr if push_result else '未知错误'}")
+        print(f"[ERROR] 强制推送失败: {push_result.stderr if push_result else '未知错误'}")
         return False
 
-    print("强制推送成功")
+    print("[OUTPUT] 强制推送成功")
 
     # 清理工作目录
     clean_cmd = 'git clean -f -d'
     clean_result = run_command(clean_cmd, capture_output=False, cwd=repo_path)
     if not clean_result or clean_result.returncode != 0:
-        print(f"清理工作目录失败: {clean_result.stderr if clean_result else '未知错误'}")
+        print(f"[ERROR] 清理工作目录失败: {clean_result.stderr if clean_result else '未知错误'}")
         return False
 
-    print("清理工作目录成功")
+    print("[OUTPUT] 清理工作目录成功")
 
     # 获取当前的最新commit ID
     cur_commit_cmd = 'git rev-parse HEAD'
     cur_commit_result = run_command(cur_commit_cmd, cwd=repo_path)
     if not cur_commit_result or cur_commit_result.returncode != 0:
-        print(f"获取当前commit失败: {cur_commit_result.stderr if cur_commit_result else '未知错误'}")
+        print(f"[ERROR] 获取当前commit失败: {cur_commit_result.stderr if cur_commit_result else '未知错误'}")
         return False
 
     cur_commit_id = cur_commit_result.stdout.strip()
 
     # 比对是否与目标commit ID一致
     if cur_commit_id == dest_commit_id:
-        print(f"重置 {branch} 成功! CommitID: {cur_commit_id[:7]}")
+        print(f"[OUTPUT] 重置 {branch} 成功! CommitID: {cur_commit_id[:7]}")
         return True
     else:
-        print(f"重置 {branch} 失败! CommitID不匹配: {cur_commit_id[:7]} != {dest_commit_id[:7]}")
+        print(f"[ERROR] 重置 {branch} 失败! CommitID不匹配: {cur_commit_id[:7]} != {dest_commit_id[:7]}")
         return False
 
 def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_path="."):
     """将源分支的内容同步到目标分支（假设已经切换到目标分支）"""
-    print(f"开始将源分支 {source_branch} 的内容同步到目标分支 {target_branch}...")
+    print(f"[OUTPUT] 开始将源分支 {source_branch} 的内容同步到目标分支 {target_branch}...")
 
     # 保存当前工作目录
     original_cwd = os.getcwd()
@@ -372,69 +372,69 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
         if current_branch_result and current_branch_result.returncode == 0:
             current_branch = current_branch_result.stdout.strip()
             if current_branch != target_branch:
-                print(f"警告：当前分支是 {current_branch}，但期望是 {target_branch}")
+                print(f"[OUTPUT] 警告：当前分支是 {current_branch}，但期望是 {target_branch}")
                 # 尝试切换到目标分支
                 checkout_cmd = f'git checkout {target_branch}'
                 checkout_result = run_command(checkout_cmd, capture_output=False, cwd=repo_path)
                 if not checkout_result or checkout_result.returncode != 0:
-                    print(f"切换到目标分支 {target_branch} 失败")
+                    print(f"[ERROR] 切换到目标分支 {target_branch} 失败")
                     return False
         
-        print(f"确认当前分支是目标分支: {target_branch}")
+        print(f"[OUTPUT] 确认当前分支是目标分支: {target_branch}")
         
         # 获取源分支的目标commit ID
         dest_commit_id = get_dest_commit_id(source_branch, sync_time, repo_path)
         if not dest_commit_id:
             return False
 
-        print(f"源分支 {source_branch} 的目标commit ID: {dest_commit_id[:7]}")
+        print(f"[OUTPUT] 源分支 {source_branch} 的目标commit ID: {dest_commit_id[:7]}")
 
         # reset hard到源分支的指定commit
         reset_cmd = f'git reset --hard {dest_commit_id}'
         reset_result = run_command(reset_cmd, capture_output=False, cwd=repo_path)
         if not reset_result or reset_result.returncode != 0:
-            print(f"重置分支失败: {reset_result.stderr if reset_result else '未知错误'}")
+            print(f"[ERROR] 重置分支失败: {reset_result.stderr if reset_result else '未知错误'}")
             return False
 
-        print("重置分支成功")
+        print("[OUTPUT] 重置分支成功")
 
         # 强制推送到远端
         push_cmd = 'git push --force'
         push_result = run_command(push_cmd, capture_output=False, cwd=repo_path)
         if not push_result or push_result.returncode != 0:
-            print(f"强制推送失败: {push_result.stderr if push_result else '未知错误'}")
+            print(f"[ERROR] 强制推送失败: {push_result.stderr if push_result else '未知错误'}")
             return False
 
-        print("强制推送成功")
+        print("[OUTPUT] 强制推送成功")
 
         # 清理工作目录
         clean_cmd = 'git clean -f -d'
         clean_result = run_command(clean_cmd, capture_output=False, cwd=repo_path)
         if not clean_result or clean_result.returncode != 0:
-            print(f"清理工作目录失败: {clean_result.stderr if clean_result else '未知错误'}")
+            print(f"[ERROR] 清理工作目录失败: {clean_result.stderr if clean_result else '未知错误'}")
             return False
 
-        print("清理工作目录成功")
+        print("[OUTPUT] 清理工作目录成功")
 
         # 获取当前的最新commit ID
         cur_commit_cmd = 'git rev-parse HEAD'
         cur_commit_result = run_command(cur_commit_cmd, cwd=repo_path)
         if not cur_commit_result or cur_commit_result.returncode != 0:
-            print(f"获取当前commit失败: {cur_commit_result.stderr if cur_commit_result else '未知错误'}")
+            print(f"[ERROR] 获取当前commit失败: {cur_commit_result.stderr if cur_commit_result else '未知错误'}")
             return False
 
         cur_commit_id = cur_commit_result.stdout.strip()
 
         # 比对是否与目标commit ID一致
         if cur_commit_id == dest_commit_id:
-            print(f"同步成功! 目标分支 {target_branch} 已同步到源分支 {source_branch} 的commit: {cur_commit_id[:7]}")
+            print(f"[OUTPUT] 同步成功! 目标分支 {target_branch} 已同步到源分支 {source_branch} 的commit: {cur_commit_id[:7]}")
             return True
         else:
-            print(f"同步失败! CommitID不匹配: {cur_commit_id[:7]} != {dest_commit_id[:7]}")
+            print(f"[ERROR] 同步失败! CommitID不匹配: {cur_commit_id[:7]} != {dest_commit_id[:7]}")
             return False
             
     except Exception as e:
-        print(f"同步过程中发生异常: {e}")
+        print(f"[ERROR] 同步过程中发生异常: {e}")
         return False
     finally:
         # 恢复原始工作目录
@@ -445,12 +445,12 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
 def sync_repositories(repositories, sync_time=None, source_branch=None):
     """同步所有仓库"""
     if not repositories:
-        print("没有定义任何仓库")
+        print("[ERROR] 没有定义任何仓库")
         return False
 
-    print(f"开始同步 {len(repositories)} 个仓库...")
+    print(f"[OUTPUT] 开始同步 {len(repositories)} 个仓库...")
     if source_branch:
-        print(f"源分支: {source_branch}")
+        print(f"[OUTPUT] 源分支: {source_branch}")
 
     # 记录详细的同步结果
     sync_results = []
@@ -466,11 +466,11 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
         # 如果没有指定源分支，则使用目标分支作为源分支（保持原有行为）
         actual_source_branch = source_branch if source_branch else target_branch
 
-        print(f"\n{'='*50}")
-        print(f"同步仓库: {repo_name}")
-        print(f"路径: {repo_path}")
-        print(f"目标分支: {target_branch}")
-        print(f"源分支: {actual_source_branch}")
+        print(f"\n[OUTPUT] {'='*50}")
+        print(f"[OUTPUT] 同步仓库: {repo_name}")
+        print(f"[OUTPUT] 路径: {repo_path}")
+        print(f"[OUTPUT] 目标分支: {target_branch}")
+        print(f"[OUTPUT] 源分支: {actual_source_branch}")
 
         # 验证仓库
         if not validate_repository(repo_path):
@@ -492,15 +492,15 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
         try:
             # 切换到仓库目录
             os.chdir(repo_path)
-            print(f"已切换到仓库目录: {repo_path}")
+            print(f"[OUTPUT] 已切换到仓库目录: {repo_path}")
 
             # 先切换到目标分支，处理远程仓库新建分支但本地尚未获取的情况
-            print(f"切换到目标分支: {target_branch}")
+            print(f"[OUTPUT] 切换到目标分支: {target_branch}")
             checkout_cmd = f'git checkout {target_branch}'
             checkout_result = run_command(checkout_cmd, capture_output=False, cwd=repo_path)
             
             if checkout_result and checkout_result.returncode == 0:
-                print(f"已切换到目标分支: {target_branch}")
+                print(f"[OUTPUT] 已切换到目标分支: {target_branch}")
             else:
                 fetch_cmd = 'git fetch origin'
                 fetch_result = run_command(fetch_cmd, capture_output=False, cwd=repo_path)
@@ -510,10 +510,10 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
                     checkout_remote_result = run_command(checkout_remote_cmd, capture_output=False, cwd=repo_path)
                     
                     if checkout_remote_result and checkout_remote_result.returncode == 0:
-                        print(f"从远程创建并切换到目标分支: {target_branch}")
+                        print(f"[OUTPUT] 从远程创建并切换到目标分支: {target_branch}")
                     else:
                         # 第四步：如果从远程创建也失败，说明分支确实不存在
-                        print(f"切换到目标分支 {target_branch} 失败，分支可能不存在")
+                        print(f"[ERROR] 切换到目标分支 {target_branch} 失败，分支可能不存在")
                         sync_results.append({
                             "name": repo_name,
                             "path": repo_path,
@@ -525,7 +525,7 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
                         failed_count += 1
                         continue
                 else:
-                    print(f"获取远程分支信息失败，切换到目标分支 {target_branch} 失败")
+                    print(f"[ERROR] 获取远程分支信息失败，切换到目标分支 {target_branch} 失败")
                     sync_results.append({
                         "name": repo_name,
                         "path": repo_path,
@@ -537,13 +537,13 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
                     failed_count += 1
                     continue
             
-            print(f"已成功切换到目标分支: {target_branch}")
+            print(f"[OUTPUT] 已成功切换到目标分支: {target_branch}")
 
             # 在同步前为当前状态打tag（使用目标分支）
-            print("在同步前为当前状态打tag...")
+            print("[OUTPUT] 在同步前为当前状态打tag...")
             tag_success = tag_latest_commit(target_branch)
         except Exception as e:
-            print(f"处理仓库 {repo_name} 时发生错误: {e}")
+            print(f"[ERROR] 处理仓库 {repo_name} 时发生错误: {e}")
             sync_results.append({
                 "name": repo_name,
                 "path": repo_path,
@@ -559,15 +559,15 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
             os.chdir(original_cwd)
 
         if tag_success:
-            print(f"{repo_name}同步前tag创建成功")
+            print(f"[OUTPUT] {repo_name}同步前tag创建成功")
         else:
-            print(f"{repo_name}同步前tag创建失败")
+            print(f"[ERROR] {repo_name}同步前tag创建失败")
 
         # 执行同步（reset_branch函数内部会处理目录切换）
         success = reset_branch_to_source(actual_source_branch, target_branch, sync_time, repo_path)
 
         if success:
-            print(f"[SUCCESS] {repo_name} 同步成功")
+            print(f"[OUTPUT] [SUCCESS] {repo_name} 同步成功")
             sync_results.append({
                 "name": repo_name,
                 "path": repo_path,
@@ -578,7 +578,7 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
             })
             success_count += 1
         else:
-            print(f"[ERROR] {repo_name} 同步失败")
+            print(f"[OUTPUT] [ERROR] {repo_name} 同步失败")
             sync_results.append({
                 "name": repo_name,
                 "path": repo_path,
@@ -590,29 +590,29 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
             failed_count += 1
 
     # 详细显示同步结果
-    print(f"\n{'='*60}")
-    print("=== 同步完成详情 ===")
-    print(f"总计仓库数: {len(repositories)}")
-    print(f"成功: {success_count}")
-    print(f"失败: {failed_count}")
+    print(f"\n[OUTPUT] {'='*60}")
+    print("[OUTPUT] === 同步完成详情 ===")
+    print(f"[OUTPUT] 总计仓库数: {len(repositories)}")
+    print(f"[OUTPUT] 成功: {success_count}")
+    print(f"[OUTPUT] 失败: {failed_count}")
 
     # 显示成功仓库列表
     if success_count > 0:
-        print(f"\n[SUCCESS] 成功同步的仓库 ({success_count}个):")
+        print(f"\n[OUTPUT] [SUCCESS] 成功同步的仓库 ({success_count}个):")
         for result in sync_results:
             if result["success"]:
-                print(f"  - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
+                print(f"[OUTPUT]   - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
 
     # 显示失败仓库列表及错误信息
     if failed_count > 0:
-        print(f"\n[ERROR] 同步失败的仓库 ({failed_count}个):")
+        print(f"\n[OUTPUT] [ERROR] 同步失败的仓库 ({failed_count}个):")
         for result in sync_results:
             if not result["success"]:
-                print(f"  - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
+                print(f"[OUTPUT]   - {result['name']} (目标分支: {result['target_branch']}, 源分支: {result['source_branch']})")
                 if result["error"]:
-                    print(f"    错误: {result['error']}")
+                    print(f"[OUTPUT]     错误: {result['error']}")
 
-    print(f"\n{'='*60}")
+    print(f"\n[OUTPUT] {'='*60}")
 
     return failed_count == 0
 
@@ -895,60 +895,60 @@ def tag_latest_commit(branch_name, tag_prefix=""):
     Returns:
         bool: 是否成功
     """
-    print(f"开始为分支 '{branch_name}' 的最新commit打tag...")
+    print(f"[OUTPUT] 开始为分支 '{branch_name}' 的最新commit打tag...")
 
     # 获取最新的commit
     commit_id = get_latest_commit(branch_name)
 
     if not commit_id:
-        print("没有找到需要打tag的commit")
+        print("[ERROR] 没有找到需要打tag的commit")
         return False
 
     # 为commit打tag
     if create_tag_for_commit(commit_id, tag_prefix):
-        print(f"\n成功为分支 '{branch_name}' 的最新commit打tag")
+        print(f"[OUTPUT] 成功为分支 '{branch_name}' 的最新commit打tag")
 
         # 推送tag到远程仓库
         try:
             push_cmd = "git push origin --tags"
             push_result = subprocess.run(push_cmd, shell=True, capture_output=True, text=True)
             if push_result.returncode == 0:
-                print("推送tag到远程仓库成功")
+                print("[OUTPUT] 推送tag到远程仓库成功")
             else:
                 error_msg = push_result.stderr
                 if "authority" in error_msg.lower() or "permission" in error_msg.lower():
-                    print("  权限不足，无法推送tag到远程仓库")
-                    print("   您没有推送tag到此项目的权限")
+                    print("[ERROR]   权限不足，无法推送tag到远程仓库")
+                    print("[ERROR]    您没有推送tag到此项目的权限")
                 else:
-                    print(f"推送tag失败：{error_msg}")
+                    print(f"[ERROR] 推送tag失败：{error_msg}")
         except Exception as e:
-            print(f"推送tag时发生错误：{e}")
+            print(f"[ERROR] 推送tag时发生错误：{e}")
 
         return True
     else:
-        print(f"\n为分支 '{branch_name}' 的最新commit打tag失败")
+        print(f"[ERROR] 为分支 '{branch_name}' 的最新commit打tag失败")
         return False
 
 
 def show_permission_status():
     """显示当前权限状态"""
-    print("检查当前git权限状态...")
+    print("[OUTPUT] 检查当前git权限状态...")
     has_read, has_write = check_git_permission()
 
-    print(f"读取权限: {'  有' if has_read else '  无'}")
-    print(f"写入权限: {'  有' if has_write else '  无'}")
+    print(f"[OUTPUT] 读取权限: {'  有' if has_read else '  无'}")
+    print(f"[OUTPUT] 写入权限: {'  有' if has_write else '  无'}")
 
     if not has_read:
-        print("\n🔍 可能的原因：")
-        print("  • 没有访问远程仓库的权限")
-        print("  • 网络连接问题")
-        print("  • 认证信息错误")
+        print("[OUTPUT] \n🔍 可能的原因：")
+        print("[OUTPUT]   • 没有访问远程仓库的权限")
+        print("[OUTPUT]   • 网络连接问题")
+        print("[OUTPUT]   • 认证信息错误")
 
     if not has_write:
-        print("\n🔍 可能的原因：")
-        print("  • 没有推送权限")
-        print("  • 项目权限设置限制")
-        print("  • 需要管理员权限")
+        print("[OUTPUT] \n🔍 可能的原因：")
+        print("[OUTPUT]   • 没有推送权限")
+        print("[OUTPUT]   • 项目权限设置限制")
+        print("[OUTPUT]   • 需要管理员权限")
 
 
 
@@ -964,7 +964,7 @@ def main():
     # 从环境变量SyncTime读取同步时间
     sync_time = os.environ.get('SyncTime')
     if sync_time:
-        print(f"从环境变量读取同步时间: {sync_time}")
+        print(f"[OUTPUT] 从环境变量读取同步时间: {sync_time}")
 
     # 从环境变量加载仓库配置
     # repositories = load_repositories_from_env()
@@ -976,8 +976,8 @@ def main():
     source_branch = None
     if args.branch:
         source_branch = args.branch
-        print(f"使用源分支: {source_branch}")
-        print(f"目标分支: 使用repositories配置中的分支")
+        print(f"[OUTPUT] 使用源分支: {source_branch}")
+        print(f"[OUTPUT] 目标分支: 使用repositories配置中的分支")
     
     # 执行同步
     success = sync_repositories(repositories, sync_time, source_branch)
