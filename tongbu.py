@@ -356,7 +356,7 @@ def reset_branch(branch, sync_time=None, repo_path="."):
         return False
 
 def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_path="."):
-    """将源分支的内容同步到目标分支"""
+    """将源分支的内容同步到目标分支（假设已经切换到目标分支）"""
     print(f"开始将源分支 {source_branch} 的内容同步到目标分支 {target_branch}...")
 
     # 保存当前工作目录
@@ -366,30 +366,21 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
         # 切换到仓库目录
         os.chdir(repo_path)
         
-        # 确保目标分支存在且切换到目标分支
-        print(f"切换到目标分支: {target_branch}")
+        # 确认当前分支是目标分支（已经由sync_repositories函数切换）
+        current_branch_cmd = 'git branch --show-current'
+        current_branch_result = run_command(current_branch_cmd, cwd=repo_path)
+        if current_branch_result and current_branch_result.returncode == 0:
+            current_branch = current_branch_result.stdout.strip()
+            if current_branch != target_branch:
+                print(f"警告：当前分支是 {current_branch}，但期望是 {target_branch}")
+                # 尝试切换到目标分支
+                checkout_cmd = f'git checkout {target_branch}'
+                checkout_result = run_command(checkout_cmd, capture_output=False, cwd=repo_path)
+                if not checkout_result or checkout_result.returncode != 0:
+                    print(f"切换到目标分支 {target_branch} 失败")
+                    return False
         
-        # 检查目标分支是否存在
-        branch_check_cmd = f'git rev-parse --verify {target_branch}'
-        branch_check_result = run_command(branch_check_cmd)
-        
-        if branch_check_result and branch_check_result.returncode == 0:
-            # 分支存在，切换到目标分支
-            checkout_cmd = f'git checkout {target_branch}'
-            checkout_result = run_command(checkout_cmd, capture_output=False)
-            if not checkout_result or checkout_result.returncode != 0:
-                print(f"切换到目标分支 {target_branch} 失败")
-                return False
-        else:
-            # 分支不存在，从远程创建并切换到目标分支
-            print(f"目标分支 {target_branch} 不存在，从远程创建")
-            checkout_cmd = f'git checkout -b {target_branch} origin/{target_branch}'
-            checkout_result = run_command(checkout_cmd, capture_output=False)
-            if not checkout_result or checkout_result.returncode != 0:
-                print(f"创建并切换到目标分支 {target_branch} 失败")
-                return False
-        
-        print(f"已切换到目标分支: {target_branch}")
+        print(f"确认当前分支是目标分支: {target_branch}")
         
         # 获取源分支的目标commit ID
         dest_commit_id = get_dest_commit_id(source_branch, sync_time, repo_path)
@@ -400,7 +391,7 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
 
         # reset hard到源分支的指定commit
         reset_cmd = f'git reset --hard {dest_commit_id}'
-        reset_result = run_command(reset_cmd, capture_output=False)
+        reset_result = run_command(reset_cmd, capture_output=False, cwd=repo_path)
         if not reset_result or reset_result.returncode != 0:
             print(f"重置分支失败: {reset_result.stderr if reset_result else '未知错误'}")
             return False
@@ -409,7 +400,7 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
 
         # 强制推送到远端
         push_cmd = 'git push --force'
-        push_result = run_command(push_cmd, capture_output=False)
+        push_result = run_command(push_cmd, capture_output=False, cwd=repo_path)
         if not push_result or push_result.returncode != 0:
             print(f"强制推送失败: {push_result.stderr if push_result else '未知错误'}")
             return False
@@ -418,7 +409,7 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
 
         # 清理工作目录
         clean_cmd = 'git clean -f -d'
-        clean_result = run_command(clean_cmd, capture_output=False)
+        clean_result = run_command(clean_cmd, capture_output=False, cwd=repo_path)
         if not clean_result or clean_result.returncode != 0:
             print(f"清理工作目录失败: {clean_result.stderr if clean_result else '未知错误'}")
             return False
@@ -427,7 +418,7 @@ def reset_branch_to_source(source_branch, target_branch, sync_time=None, repo_pa
 
         # 获取当前的最新commit ID
         cur_commit_cmd = 'git rev-parse HEAD'
-        cur_commit_result = run_command(cur_commit_cmd)
+        cur_commit_result = run_command(cur_commit_cmd, cwd=repo_path)
         if not cur_commit_result or cur_commit_result.returncode != 0:
             print(f"获取当前commit失败: {cur_commit_result.stderr if cur_commit_result else '未知错误'}")
             return False
@@ -502,6 +493,51 @@ def sync_repositories(repositories, sync_time=None, source_branch=None):
             # 切换到仓库目录
             os.chdir(repo_path)
             print(f"已切换到仓库目录: {repo_path}")
+
+            # 先切换到目标分支，处理远程仓库新建分支但本地尚未获取的情况
+            print(f"切换到目标分支: {target_branch}")
+            checkout_cmd = f'git checkout {target_branch}'
+            checkout_result = run_command(checkout_cmd, capture_output=False, cwd=repo_path)
+            
+            if checkout_result and checkout_result.returncode == 0:
+                print(f"已切换到目标分支: {target_branch}")
+            else:
+                fetch_cmd = 'git fetch origin'
+                fetch_result = run_command(fetch_cmd, capture_output=False, cwd=repo_path)
+                
+                if fetch_result and fetch_result.returncode == 0:
+                    checkout_remote_cmd = f'git checkout -b {target_branch} origin/{target_branch}'
+                    checkout_remote_result = run_command(checkout_remote_cmd, capture_output=False, cwd=repo_path)
+                    
+                    if checkout_remote_result and checkout_remote_result.returncode == 0:
+                        print(f"从远程创建并切换到目标分支: {target_branch}")
+                    else:
+                        # 第四步：如果从远程创建也失败，说明分支确实不存在
+                        print(f"切换到目标分支 {target_branch} 失败，分支可能不存在")
+                        sync_results.append({
+                            "name": repo_name,
+                            "path": repo_path,
+                            "target_branch": target_branch,
+                            "source_branch": actual_source_branch,
+                            "success": False,
+                            "error": f"切换到目标分支失败，分支可能不存在"
+                        })
+                        failed_count += 1
+                        continue
+                else:
+                    print(f"获取远程分支信息失败，切换到目标分支 {target_branch} 失败")
+                    sync_results.append({
+                        "name": repo_name,
+                        "path": repo_path,
+                        "target_branch": target_branch,
+                        "source_branch": actual_source_branch,
+                        "success": False,
+                        "error": f"获取远程分支信息失败，无法切换到目标分支"
+                    })
+                    failed_count += 1
+                    continue
+            
+            print(f"已成功切换到目标分支: {target_branch}")
 
             # 在同步前为当前状态打tag（使用目标分支）
             print("在同步前为当前状态打tag...")
