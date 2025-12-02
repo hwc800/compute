@@ -155,7 +155,7 @@ def load_repositories_from_env():
     if os.environ.get('SyncEngine', None):
         # SourceEngine
         repositories.append({'name': os.environ.get('SourceEngine', 'SourceEngine'),
-                             'path': os.environ.get('EnginePullPath', ''),
+                             'path': os.environ.get('EnginePath', ''),
                              'branch': os.environ.get('EnginePullParam', '')})
     # TikiMainContent
     repositories.append({'name': os.environ.get('TikiMainContent', 'TikiMainContent'),
