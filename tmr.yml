@@ -1,0 +1,287 @@
+name: TikiStarSharedStudio_TMR
+groupID: -1
+projects:
+  - name: ConfigData
+    revision: "_20251205"
+    dependence: []
+    path: ConfigData
+    url: 'https://git.tencent.com/TikiStar/WeSOC_Code/ConfigData.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: docs
+    revision: "_20251205"
+    dependence: []
+    path: docs
+    url: 'https://git.tencent.com/TikiStar/docs.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: ProtocolFile
+    revision: "_20251205"
+    dependence: []
+    path: ProtocolFile
+    url: 'https://git.tencent.com/TikiStar/WeSOC_Code/ProtocolFile.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TikiStar
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar
+    url: 'https://git.tencent.com/TikiStar/internal/TikiMainRoot.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: Content
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Content
+    url: 'https://git.tencent.com/TikiStar/TikiStarArt/TikiStarArtContent.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: BP_MinViableSystemSet
+    revision: "_20251205"
+    dependence: []
+    path: >-
+      TikiStar/Content/Blueprints/TypeScript/MainBundleScripts/MinViableSystemSet
+    url: >-
+      https://git.tencent.com/TikiStar/MinViableSystemSet/Content/Blueprints/TypeScript/MinimumViableBlueprintSet.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: MinViableContentSet
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Content/MinViableContentSet
+    url: >-
+      https://git.tencent.com/TikiStar/MinViableSystemSet/Content/MinimumViableContentSet.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TikiFramework
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Content/TikiFramework
+    url: 'https://git.tencent.com/TikiStar/UGC/TikiFrameworkContent_External.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: Framework
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/MainBundleScripts/Framework
+    url: 'https://git.tencent.com/TikiStar/WeSOC_Code/WeSOC_Ts_Framework.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: MinViableSystemSet
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/MainBundleScripts/MinViableSystemSet
+    url: >-
+      https://git.tencent.com/TikiStar/MinViableSystemSet/Ts_MinimumViableSystemSet.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: ProtoJS
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/MainBundleScripts/Protocol/ProtoJS
+    url: 'https://git.tencent.com/TikiStar/WeSOC_Code/ProtocolJS.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: DistributedDS
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/DistributedDS
+    url: 'https://git.tencent.com/TikiStar/UGC/Temp/DistributedDSFade_External.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: GameFeatures
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GameFeatures
+    url: 'https://git.tencent.com/TikiStar/internal/TikiStarMain_GameFeatures.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: SharedSystems
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GameFeatures/SharedSystems
+    url: >-
+      https://git.tencent.com/TikiStar/TikiStarSharedStudioRepos/SharedSystems.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TKPartyGame
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GameFeatures/TKPartyGame
+    url: 'https://git.tencent.com/TikiStar/PartyGame/TKPartyGame.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TKPartyGame_Content
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GameFeatures/TKPartyGame/Content
+    url: 'https://git.tencent.com/TikiStar/PartyGame/TKPartyGame_Content.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TKPartyGameSystem
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GameFeatures/TKPartyGameSystem
+    url: 'https://git.tencent.com/TikiStar/PartyGame/TKPartyGameSystem.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TKPartyGameSystem_Content
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GameFeatures/TKPartyGameSystem/Content
+    url: 'https://git.tencent.com/TikiStar/PartyGame/TKPartyGameSystem_Content.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: GCloudSDK
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/GCloudSDK
+    url: 'https://git.tencent.com/TikiStar/WeSOC_Code/Plugins/GCloudSDK.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: MinViablePluginSet
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/MinViablePluginSet
+    url: >-
+      https://git.tencent.com/TikiStar/MinViableSystemSet/Plugins/MinimumViablePluginSet.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: Puerts
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/Puerts
+    url: >-
+      https://git.tencent.com/TikiStar/WeSOC_Code/Plugins/WeSOC_Sub_Plugin_Puerts.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: TKCoreFramework
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Plugins/TKCoreFramework
+    url: >-
+      https://git.tencent.com/TikiStar/WeSOC_Code/Plugins/Plugin_TKCoreFramework.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: MinViableSourceSet
+    revision: "_20251205"
+    dependence: []
+    path: TikiStar/Source/MinViableSourceSet
+    url: >-
+      https://git.tencent.com/TikiStar/MinViableSystemSet/Cpp_MinimumViableSourceSet.git
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: UE5Editor
+    revision: "_20251205"
+    dependence: []
+    path: UE5Editor
+    url: 'https://git.tencent.com/TikiStar/UE5Editor.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
+  - name: WeTools
+    revision: "_20251205"
+    dependence: []
+    path: WeTools
+    url: 'https://git.tencent.com/TikiStar/tools/WeTools.git'
+    checkoutStrategy: default
+    repoType: git
+    repositorySpeciality: none
+    globalUpdateStrategy: none
+    repoDefaultSelection: none
+    charset: utf8
